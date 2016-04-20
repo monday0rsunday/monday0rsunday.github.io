@@ -4,9 +4,17 @@ title: "Taijiquan"
 ---
 <div class="posts">
 {% for post in site.categories.taijiquan %}
-	<div>
+	<article>
 		<h2>{{ post.title }}</h2>
-		<span>{{ post.description }}</span> <span><a href="{{ post.url }}">More</a></span>
-	</div>
+		<div>{{ post.description }}</div>
+		<div class="more">
+			<ul class="breakcrumb">
+				<li><span><a href="{{ post.url }}">View</a></span></li>
+			{% for category in post.categories %}
+				<li><span><a href="/{{ category }}">{{ category | camel }}</a></span></li>
+			{% endfor %}
+			</ul>
+		</div>
+	</article>
 {% endfor %}
 </div>
