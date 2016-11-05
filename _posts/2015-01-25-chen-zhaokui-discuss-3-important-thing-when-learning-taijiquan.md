@@ -1,6 +1,8 @@
 ---
 layout: post
 categories: martial-arts taijiquan
+date: 2015-01-25 16:25:06 +0700
+comments: true
 tag: taijiquan
 title: "Trần Chiếu Khuê luận 3 vấn đề quan trọng khi học Thái Cực Quyền"
 description: "Trần Chiếu Khuê (1928-1981) là con trai của đại sư Trần Phát Khoa – Tông sư Trần thức Thái Cực Quyền đời thứ 17 của gia tộc họ Trần. Trần Chiếu Khuê không những khắc khổ luyện tập mà còn là người thông minh, có tố chất võ thuật nên ông rất nhanh chóng lãnh hội được quyền lý, quyền giá, quyền phổ … đồng thời tiến hành chỉnh lý, sắp xếp lại một cách có hệ thống và khoa học. Ông và cha ông được công nhận là hai đại tông sư có công lớn trong việc phát triển Trần thức Thái Cực Quyền ở thế kỷ XX. Học trò chân truyền hiện nay của Trần Chiếu Khuê nổi tiếng trong và ngoài Trung Quốc, đại diện còn có: Vạn Văn Đức – Hội trưởng Hội Trần thức Thái Cực Quyền Thượng Hải (năm nay đã ngoài 90 tuổi), Mã Hồng (viết và tổng hợp khá nhiều tài liệu về Trần thức Thái Cực Quyền hiện phát hành rộng rãi tại Trung Quốc), Ngô Tông Kỳ (hiện đang sinh sống tại HongKong), Vương Tây An (viết và tổng hợp khá nhiều tài liệu về Trần thức Thái Cực thôi thủ hiện phát hành rộng rãi tại Trung Quốc). Bài viết sau là câu chuyện được học trò của ông kể lại mà tôi sưu tầm được trên Internet."

@@ -1,6 +1,8 @@
 ---
 layout: post
 categories: martial-arts taijiquan
+date: 2015-01-25 16:25:06 +0700
+comments: true
 tag: taijiquan
 title: "Thái Cực Quyền luận - Vương Tông Nhạc"
 description: "“Thái Cực Quyền luận” do Vương Tông Nhạc đời nhà Thanh viết được coi là một trong những bài văn luận cổ điển về Thái Cực Quyền, xuất hiện sớm nhất và rất có giá trị. Vương Tông Nhạc là người tỉnh Sơn Tây (Trung Quốc), ông sinh vào thời vua Càn Long (1736- 1795), nghề nghiệp chủ yếu là dạy học. Ông ham mê võ thuật, tinh thông quyền pháp, thương pháp, khổ công luyện tập và nghiên cứu hàng chục năm, có các tác phẩm tiêu biểu là : “Thái Cực Quyền phổ”, “Âm phù thương phổ”. Trong đó, “Thái Cực Quyền luận” vẫn được công nhận là bài văn luận có giá trị nhất của “Thái Cực Quyền phổ”. Bài luận này mang ý nghĩa chỉ dẫn đối với việc tập luyện quyền giá, thôi thủ, tán thủ."
