@@ -1,26 +1,35 @@
 ---
 layout: default
-title: Home
 ---
-<div class="posts">
-{% for post in site.posts %}
-	<article>
-		<span class="post-left-col">
-			<img width="20%" height="30%"></img>
-			<div>{{ post.date | date_to_string }}</div>
-		</span>
-		<span class="post-right-col">
-			<h2>{{ post.title }}</h2>
-			<div>{{ post.description }}</div>
-			<div class="more">
-				<ul class="breakcrumb">
-					<li><span><a href="{{ post.url }}">View</a></span></li>
-				{% for category in post.categories %}
-					<li><span><a href="/{{ category }}">{{ category | camel }}</a></span></li>
-				{% endfor %}
-				</ul>
-			</div>
-		</span>
-	</article>
+
+{% for post in paginator.posts %}
+<div class="article">
+    <div class="well">
+        <h1><a href="{{ site.baseurl}}{{ post.url }}">{{ post.date | date: "%b %-d, %Y" }} - {{ post.title }}</a></h1>
+        {% if site.comments and post.comments %}
+            {% if site.disqus != '' %}
+            <p class="author"><a href="{{ site.baseurl }}{{ post.url }}/#disqus_thread" data-disqus-identifier="{{ post.url | slugify }}">Comments</a></p>
+            {% elsif site.isso != '' %}
+            <p class="author"><a href="{{ site.baseurl }}{{ post.url }}{{ site.isso_suffix }}#isso-thread">Comments</a></p>
+            {% endif %}
+        {% endif %}
+        <summary class="sapo">
+            {{ post.description }}
+        </summary>
+    </div>
+</div>
 {% endfor %}
+
+<div class="pagination">
+  {% if paginator.previous_page %}
+      {% if paginator.previous_page == 1 %}
+        <a class="btn btn-default" href="{{ site.baseurl}}/index.html" class="previous">Newer</a>
+      {% else %}
+        <a class="btn btn-default" href="{{ site.baseurl}}/page{{ paginator.previous_page }}" class="previous">Newer</a>
+      {% endif %}
+  {% endif %}
+  <span class="page_number ">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
+  {% if paginator.next_page %}
+    <a class="btn btn-default" href="{{ site.baseurl}}/page{{ paginator.next_page }}" class="next">Older</a>
+  {% endif %}
 </div>
