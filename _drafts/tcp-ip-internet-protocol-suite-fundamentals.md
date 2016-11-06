@@ -39,15 +39,55 @@ Trong khi TCP/IP chỉ giải quyết bài toán truyền thông trong một h�
 
 OSI thường dùng làm mô hình tham chiếu khi nhắc tới mạng máy tính. Trong các mục tiếp theo, khi tham chiếu mô hình mạng tôi sẽ sử dụng 4 tầng từ vật lý tới giao vận, thêm 1 tầng ứng dụng của OSI, và tất cả các tầng của mô hình TCP/IP. Tôi cũng dùng từ viết tắt L1,...L7 cho các tầng này, từ tầng vật lý đến tầng ứng dụng.
 
-# Tâng giao tiếp mạng và một số giao thức Ethernet, PPP, X.25, Frame Relay
+# Tầng giao diện mạng và một số giao thức Ethernet, PPP, X.25, Frame Relay
+
+Tầng giao diện mạng chịu trách nhiệm giao tiếp giữa các nút liền kề(có kết nối vật lý với nhau) trong mạng.
+* Các gói dữ liệu được chia thành các khung dữ liệu
+* Các khung dữ liệu được chuyển đổi thành các tín hiệu, và truyền trên kết nối vật lý
+* Nút đích khi nhận được tín hiệu sẽ khôi phục lại khung dữ liệu
 
 # Tầng mạng và một số giao thức IP, ARP, ICMP, IGMP
 
+Tầng mạng chịu trách nhiệm định địa chỉ, đóng gói và định tuyến gói dữ liệu giữa các nút nằm trong mạng.
+* Mỗi nút mạng được định danh bằng một địa chỉ
+* Dữ liệu được chia thành nhiều phần, mỗi phần đóng gói trong một gói dữ liệu có chứa địa chỉ nút nguồn, địa chỉ nút đích và phần dữ liệu
+* Các gói dữ liệu được nút nguồn đẩy vào mạng, các nút mạng dựa trên địa chỉ nút đích để định tuyến gói dữ liệu tới các nút tiếp theo có khả năng tới nút đích
+Các gói dữ liệu truyền trong mạng có thể bị lạc, mất.
+
 1. Network, IP Address, Subnet, Supernet, Network Mask, CIDR
+
+   Một mạng nội bộ(intranet) hoặc liên mạng (internet) bao gồm nhiều mạng được định danh bằng một địa chỉ network, mỗi mạng gồm nhiều host tham gia vào trong mạng được định danh bằng một địa chỉ host trong mạng đó. Để định danh host trong mạng nội bộ/liên mạng, ta sử dụng địa chỉ IP bao gồm 2 phần là địa chỉ network và địa chỉ host, có độ dài cố định 32 bit. Vì mỗi mạng có số lượng host khác nhau nên địa chỉ IP được chia thành các lớp, mỗi lớp sử dụng 1 lượng N bit nhất định trong địa chỉ IP để làm địa chỉ network, và (32-N) bit còn lại làm địa chỉ host. Có 5 lớp mạng:
+
+   | Lớp | Bit bắt đầu | Số lượng bit mạng | Số lượng bit host | Địa chỉ IP bắt đầu | Địa chỉ IP kết thúc|
+   |A|0|8|24|0.0.0.0|127.255.255.255|
+   |B|10|16|16|128.0.0.0|191.255.255.255|
+   |C|110|24|8|192.0.0.0|223.255.255.255|
+   |D(multicast)|1110|-|-|224.0.0.0|239.255.255.255|
+   |E(bảo lưu)|1111|-|-|240.0.0.0|255.255.255.255|
+
+   Số lượng địa chỉ IP dùng để định danh host trong mỗi mạng bằng 2^N-2, với N là số bit host, trong đó địa chỉ có tất cả host bit bằng không đại diện cho địa chỉ network, và địa chỉ có tất cả host bit bằng một dùng để quảng bá tới tất cả các host trong mạng. Chẳng hạn với một mạng nằm trong lớp C(8 bit host) sẽ có số lượng host tối đa 2^8-2=254.
+
+   Lớp A có 256 mạng và 2^24-2 địa chỉ IP, dùng cho các tổ chức lớn, lớp B có 65536 mạng và 65534 địa chỉ IP dùng cho các tổ chức vừa và lớn, lớp C có 2^24 mạng và 254 địa chỉ IP dùng cho các tổ chức nhỏ. Với sự phát triển của Internet, rất nhiều tổ chức cỡ vừa và lớn tham gia dẫn đến số lượng mạng ở lớp B sẽ nhanh chóng dùng hết, trong khi lớp C lại không cung cáp đủ số địa chỉ IP. Vì thế một phương pháp được đề xuất là supernet, dùng một dải các lớp C để dùng cho tổ chức. Ví dụ thay vì cung cấp 1 mạng lớp B cho tổ chức cần 2000 host, thì cung cấp một dải 8 mạng lớp C liên tiếp gồm 8*254=2032 host. Tuy nhiên một vấn đề xảy ra là phải quản lý từng mạng lớp C cho tổ chức, do đó một kỹ thuật được đề xuất là  Classless Interdomain Routing CIDR, khi đó đối với một mạng lớp C gồm 2 phần: địa chỉ network bắt đầu và số lượng mạng cần thiết. 
+
+   Dựa trên một địa chỉ IP bất kỳ, ta có thể xác định được địa chỉ network, để tiện lợi hơn cũng như sự ra đời của subnet
+
+   Không gian địa chỉ IP trong mạng nội bộ và liên mạng là giống nhau, vì thế nếu mạng nội bộ tham gia vào liên mạng sẽ xảy ra sự trùng địa chỉ IP. Do đó không gian địa chỉ IP được chia thành 1 số dải theo mục đích sử dụng:
+   * Host nằm trong mạng: 0.0.0.0/8
+   * Loopback: 127.0.0.0/8
+   * Liên kết cục bộ(Link Local): 169.254.0.0/16
+   * Địa chỉ public: dùng cho liên mạng
+   * Địa chỉ riêng(Private-use): dùng cho mạng nội bộ: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
+   * Một số địa chỉ khác
 
 2. IP Routing
 
 # Tầng vận chuyển và một số giao thức TCP, UDP, SCTP
+
+Tầng vận chuyển chịu trách nhiệm vận chuyển dữ liệu và thiết lập giao tiếp giữa tầng ứng dụng và các tầng dưới.
+
+# Tầng ứng dụng và một số giao thức HTTP, FTP, SMTP, DNS, RIP
+
+Tầng ứng dụng chịu trách nhiệm cung cấp khả năng truy cập dịch vụ của các tầng dưới, và định nghĩa các giao thức ứng dụng dùng để trao đổi dữ liệu
 
 # Tản mạn về mạng máy tính
 
