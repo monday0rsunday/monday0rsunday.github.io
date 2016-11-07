@@ -39,22 +39,65 @@ Trong khi TCP/IP chỉ giải quyết bài toán truyền thông trong một h�
 
 OSI thường dùng làm mô hình tham chiếu khi nhắc tới mạng máy tính. Trong các mục tiếp theo, khi tham chiếu mô hình mạng tôi sẽ sử dụng 4 tầng từ vật lý tới giao vận, thêm 1 tầng ứng dụng của OSI, và tất cả các tầng của mô hình TCP/IP. Tôi cũng dùng từ viết tắt L1,...L7 cho các tầng này, từ tầng vật lý đến tầng ứng dụng.
 
-# Tầng giao diện mạng và một số giao thức Ethernet, PPP, X.25, Frame Relay
+# Tầng giao diện mạng và một số công nghệ Ethernet, Wifi, Token Ring, ATM, X.25, Frame Relay, PPP
 
 Tầng giao diện mạng chịu trách nhiệm giao tiếp giữa các nút liền kề(có kết nối vật lý với nhau) trong mạng.
 * Các gói dữ liệu được chia thành các khung dữ liệu
 * Các khung dữ liệu được chuyển đổi thành các tín hiệu, và truyền trên kết nối vật lý
 * Nút đích khi nhận được tín hiệu sẽ khôi phục lại khung dữ liệu
 
+Các nút trong mạng có thể ở gần nhau vài cm hoặc xa nhau tới hàng trăm cây số, vì thế mạng được chia làm một số loại theo khoảng cách địa lý, nhỏ nhất là mạng cục bộ LAN (một phòng nhỏ hoặc một tòa nhà), lớn nhất là mạng diện rộng WAN (giữa các thành phố, quốc gia hoặc liên lục địa). Để giao tiếp giữa các nút liền kề trong mạng, tùy theo LAN hay WAN có các công nghệ khác nhau. Mạng LAN trước đây dùng Token Ring còn ngày nay chủ yếu là Ethernet và Wifi, mạng WAN dùng ATM, X.25, Frame Relay. Mỗi công nghệ có một giao thức dùng trên nó chẳng hạn với Ethernet là giao thức IEEE 802.3(hay gọi với cái tên giao thức Ethernet gây hiểu nhầm với công nghệ Ethernet), với Wifi là giao thức IEEE 802.11, v.v. Bên cạnh đó cũng có một số giao thức khác có thể dùng trên nhiều công nghệ như PPP, nếu dùng qua Ethernet ta có giao thức PPPoE, nếu dùng qua ATM ta có PPPoA. Mỗi giao thức hỗ trợ một số chức năng nhất định chẳng hạn như PPP hỗ trợ xác thực trong khi Ethernet thì không, vì thế tùy theo yêu cầu của mạng ta có thể lựa chọn giao thức cho phù hợp.
+
+1. Ethernet và giao thức IEEE 802.3
+
+   Luồng dữ liệu khi giao tiếp trong Ethernet được chia làm các phần nhỏ gọi là Frame. Mỗi Frame chứa địa chỉ của nút nguồn, nút đích, dữ liệu kiểm tra lỗi, vì thế ta có thể loại bỏ các Frame lỗi. Ethernet không gửi lại Frame lỗi mà các giao thức tầng trên sẽ thực hiện việc này nếu cần. Sự ra đời của Ethernet đã đẩy lùi các công nghệ khác như Token Ring, đồng thời một số đặc trưng như địa chỉ MAC 48 bit hay Frame ảnh hưởng lên các giao thức sau này.
+
+   Một Frame Ethernet bao gồm 6 byte địa chỉ MAC nguồn, 6 byte địa chỉ MAC đích, 2 byte kiểu/độ dài dữ liệu, 46-1500 byte dữ liệu, 4 byte Frame Check Sequence. Độ dài của một Frame Ethernet tối thiểu là 64 byte, do đó nếu dữ liệu quá ít Frame Ethernet sẽ được padding đủ 64 byte. Ethernet hỗ trợ 3 kiểu giao tiếp, nút-nút Unicast, nút-một số nút Multicast, nút-tất cả nút Broadcast. Sự hỗ trợ này được thực hiện bằng cách thiết lập địa chỉ MAC đích.
+
+   * Nếu địa chỉ MAC đích là ff:ff:ff:ff:ff:ff thì Frame Ethernet gửi cho tất cả nút trên mạng.
+   * Nếu địa chỉ MAC đích có low-order bit của byte đầu tiên là 1 thì Frame Ethernet gửi cho tất cả nút trên mạng, các nút nào quan tâm tới Frame Ethernet sẽ phản hồi lại qua địa chỉ MAC nguồn
+   * Nếu địa chỉ MAC đích có low-order bit của byte đầu tiên là 0 (số chẵn) thì Frame Ethernet gửi cho một nút nào đó trên mạng (Do đó một nút trên mạng phải có địa chỉ MAC có byte đầu tiên là số chẵn)
+
+   Có một sự nhập nhằng khi tôi tìm hiểu về giao thức Ethernet đó là 2 byte kiểu/ độ dài dữ liệu (tham khảo [Ethernet (IEEE 802.3)](https://wiki.wireshark.org/Ethernet#Type_.2F_Length_field)). Ở đây nếu giá trị 2 byte này nhỏ hơn 1500 thì là độ dài của dữ liệu đằng sau, nếu giá trị của 2 byte này lớn hơn 1500 thì là kiểu của Frame Ethernet:
+
+   * 0 - 1500 length field (IEEE 802.3 and/or 802.2)
+   * 0x0800 IP(v4), Internet Protocol version 4
+   * 0x0806 ARP, Address Resolution Protocol
+   * 0x8137 IPX, Internet Packet eXchange (Novell)
+   * 0x86dd IPv6, Internet Protocol version 6
+
+   TODO: ở đoạn này có thể nói đến Hub, Bridge, Switch, tham khảo [Ethernet](https://en.wikipedia.org/wiki/Ethernet)
+
+2. Wifi và giao thức IEEE 802.11: TODO
+
+3. Giao thức PPP: TODO
+
 # Tầng mạng và một số giao thức IP, ARP, ICMP, IGMP
 
 Tầng mạng chịu trách nhiệm định địa chỉ, đóng gói và định tuyến gói dữ liệu giữa các nút nằm trong mạng.
+
 * Mỗi nút mạng được định danh bằng một địa chỉ
 * Dữ liệu được chia thành nhiều phần, mỗi phần đóng gói trong một gói dữ liệu có chứa địa chỉ nút nguồn, địa chỉ nút đích và phần dữ liệu
 * Các gói dữ liệu được nút nguồn đẩy vào mạng, các nút mạng dựa trên địa chỉ nút đích để định tuyến gói dữ liệu tới các nút tiếp theo có khả năng tới nút đích
+
 Các gói dữ liệu truyền trong mạng có thể bị lạc, mất.
 
-1. Network, IP Address, Subnet, Supernet, Network Mask, CIDR
+1. Giao thức IP
+
+2. Giao thức ARP
+
+Khi các gói tin IP được gửi qua các công nghệ mạng dựa trên sự quảng bá hay chia sẻ truy cập chẳng hạn như Ethernet hay Token Ring, ta cần xác định địa chỉ MAC của nút tiếp theo dựa trên địa chỉ IP của nút đó. Giao thức ARP sử dụng việc broadcast gói tin chứa địa chỉ IP qua tầng L2 để xác định địa chỉ MAC. 
+
+* Nút nguồn broadcast ARP Request chứa địa chỉ MAC nguồn, địa chỉ IP nguồn, địa chỉ IP đích
+* Các nút trong mạng nhận được ARP Request kiểm tra xem địa chỉ IP đích có phải của mình không
+* Nếu phải, nút đích sẽ unicast(vì nút đích đã biết địa chỉ MAC nguồn) ARP Reply chứa địa chỉ MAC đích, địa chỉ IP đích tới nút nguồn
+* Từng nút trong mạng đều có riêng một ARP cache, lưu trữ ánh xạ của địa chỉ IP và địa chỉ MAC. Mỗi khi nút đích nhận được ARP Request, hay nút nguồn nhận được ARP Reply, chúng đều cập nhật ánh xạ địa chỉ IP và địa chỉ MAC của nút còn lại. Các mục trong ARP cache có thể tĩnh hoặc động, nếu động thì có một thời gian time-out nhất định trước khi bị xóa khỏi ARP cache.
+
+3. Giao thức ICMP
+
+4. Giao thức IGMP
+
+5. IP Addressing và các khái niệm IP address, Network address, Host address, Subnet, Supernet, Network Mask, ký hiệu CIDR
 
    Một mạng nội bộ(intranet) hoặc liên mạng (internet) bao gồm nhiều mạng được định danh bằng một địa chỉ network, mỗi mạng gồm nhiều host tham gia vào trong mạng được định danh bằng một địa chỉ host trong mạng đó. Để định danh host trong mạng nội bộ/liên mạng, ta sử dụng địa chỉ IP bao gồm 2 phần là địa chỉ network và địa chỉ host, có độ dài cố định 32 bit. Vì mỗi mạng có số lượng host khác nhau nên địa chỉ IP được chia thành các lớp, mỗi lớp sử dụng 1 lượng N bit nhất định trong địa chỉ IP để làm địa chỉ network, và (32-N) bit còn lại làm địa chỉ host. Có 5 lớp mạng:
 
@@ -128,3 +171,9 @@ Tầng ứng dụng chịu trách nhiệm cung cấp khả năng truy cập dị
       * Nếu áp dụng cho địa chỉ IP bất kỳ trên 1 giao tiếp mạng cố định: IP Masquerade
    * Biên dịch địa chỉ đích - DNAT
    * Biên dịch cổng - PAT
+
+# Tài liệu tham khảo
+
+* [Introduction to TCP/IP - Microsoft Technet](https://technet.microsoft.com/en-us/library/cc939986.aspx)
+* [Ethernet - Wikipedia](https://en.wikipedia.org/wiki/Ethernet)
+* [Ethernet (IEEE 802.3) - Wireshark Wiki](https://wiki.wireshark.org/Ethernet) 
